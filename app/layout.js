@@ -1,14 +1,4 @@
-<<<<<<< HEAD
-'use client';
-=======
 "use client"; // Add this directive to make the component a Client Component
-
-import { Inter } from "next/font/google";
-import "./globals.css";
-import Navbar from "@/components/Navbar";
-import { ThemeProvider } from "@/components/theme-provider";
-import { usePathname } from "next/navigation"; // Import usePathname
->>>>>>> 0273bc7af9b8b17aee779f6750f3d12b5dbe8cb5
 
 import { Inter } from 'next/font/google';
 import './globals.css';
@@ -17,7 +7,6 @@ import { ThemeProvider } from '@/components/theme-provider';
 import { usePathname } from 'next/navigation';
 import { useEffect } from 'react';
 
-<<<<<<< HEAD
 const inter = Inter({ subsets: ['latin'] });
 
 export default function RootLayout({ children }) {
@@ -25,23 +14,22 @@ export default function RootLayout({ children }) {
   const authRoutes = ['/authentication'];
   const shouldHideNavbar = authRoutes.includes(pathname);
 
-  const googleTranslateElementInit = () => {
-    if (window.google && window.google.translate) {
-      new window.google.translate.TranslateElement(
-        {
-          pageLanguage: 'en',
-          includedLanguages: 'en,es,fr,de,hi,zh-CN,kn',
-          layout: google.translate.TranslateElement.InlineLayout.SIMPLE,
-        },
-        'google_translate_element'
-      );
-    }
-  };
-
   useEffect(() => {
     const scriptId = 'google-translate-script';
+    const googleTranslateElementInit = () => {
+      if (window.google && window.google.translate) {
+        new window.google.translate.TranslateElement(
+          {
+            pageLanguage: 'en',
+            includedLanguages: 'en,es,fr,de,hi,zh-CN,kn',
+            layout: google.translate.TranslateElement.InlineLayout.SIMPLE,
+          },
+          'google_translate_element'
+        );
+      }
+    };
 
-    const addScript = () => {
+    const addGoogleTranslateScript = () => {
       if (!document.getElementById(scriptId)) {
         const script = document.createElement('script');
         script.id = scriptId;
@@ -52,17 +40,17 @@ export default function RootLayout({ children }) {
       }
     };
 
-    const removeScript = () => {
+    const removeGoogleTranslateScript = () => {
       const script = document.getElementById(scriptId);
       if (script) script.remove();
       const translateElement = document.getElementById('google_translate_element');
       if (translateElement) translateElement.innerHTML = '';
     };
 
-    addScript();
+    addGoogleTranslateScript();
 
     return () => {
-      removeScript();
+      removeGoogleTranslateScript();
     };
   }, []);
 
@@ -81,15 +69,6 @@ export default function RootLayout({ children }) {
     };
   }, []);
 
-=======
-export default function RootLayout({ children }) {
-  const pathname = usePathname();
-
-  // Hide the Navbar on authentication routes
-  const authRoutes = ["/authentication"]; // Add your authentication routes here
-  const shouldHideNavbar = authRoutes.includes(pathname);
-
->>>>>>> 0273bc7af9b8b17aee779f6750f3d12b5dbe8cb5
   return (
     <html lang="en" className="scroll-p-20 scroll-smooth">
       <body className={inter.className}>
@@ -99,7 +78,6 @@ export default function RootLayout({ children }) {
           enableSystem
           disableTransitionOnChange
         >
-<<<<<<< HEAD
           <div
             id="google_translate_element"
             style={{
@@ -116,8 +94,6 @@ export default function RootLayout({ children }) {
               transition: 'all 0.3s ease',
             }}
           />
-=======
->>>>>>> 0273bc7af9b8b17aee779f6750f3d12b5dbe8cb5
           {!shouldHideNavbar && <Navbar />}
           {children}
         </ThemeProvider>
