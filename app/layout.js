@@ -1,17 +1,18 @@
 "use client"; // Add this directive to make the component a Client Component
 
-import { Inter } from 'next/font/google';
-import './globals.css';
 import Navbar from '@/components/Navbar';
 import { ThemeProvider } from '@/components/theme-provider';
+import { Inter } from 'next/font/google';
 import { usePathname } from 'next/navigation';
 import { useEffect } from 'react';
+import './globals.css';
 
 const inter = Inter({ subsets: ['latin'] });
 
 export default function RootLayout({ children }) {
   const pathname = usePathname();
   const authRoutes = ['/authentication'];
+
   const shouldHideNavbar = authRoutes.includes(pathname);
 
   useEffect(() => {
@@ -21,8 +22,9 @@ export default function RootLayout({ children }) {
         new window.google.translate.TranslateElement(
           {
             pageLanguage: 'en',
-            includedLanguages: 'en,es,fr,de,hi,zh-CN,kn',
+            includedLanguages: 'en,bn,te,mr,ta,ur,gu,ml,kn,or,pa,as,mai,sa,kok,sd,ne,doi,ks,sat,brx,mni,lus',
             layout: google.translate.TranslateElement.InlineLayout.SIMPLE,
+            autoDisplay: false,  // We disable automatic display of the widget
           },
           'google_translate_element'
         );
@@ -69,6 +71,13 @@ export default function RootLayout({ children }) {
     };
   }, []);
 
+  const handleTranslateClick = () => {
+    const googleTranslateElement = document.getElementById('google_translate_element');
+    if (googleTranslateElement) {
+      googleTranslateElement.style.display = googleTranslateElement.style.display === 'block' ? 'none' : 'block';
+    }
+  };
+
   return (
     <html lang="en" className="scroll-p-20 scroll-smooth">
       <body className={inter.className}>
@@ -78,11 +87,35 @@ export default function RootLayout({ children }) {
           enableSystem
           disableTransitionOnChange
         >
-          <div
-            id="google_translate_element"
+          {/* Custom Google Translate Button */}
+          <button
+            onClick={handleTranslateClick}
             style={{
               position: 'fixed',
               top: '20px',
+              right: '20px',
+              zIndex: 1000,
+              backgroundColor: '#007bff',
+              color: 'white',
+              borderRadius: '50%',
+              padding: '12px 16px',
+              boxShadow: '0 2px 10px rgba(0, 0, 0, 0.1)',
+              cursor: 'pointer',
+              fontSize: '18px',
+              border: 'none',
+              transition: 'all 0.3s ease',
+              fontWeight: 'bold',
+            }}
+          >
+            🌍
+          </button>
+
+          <div
+            id="google_translate_element"
+            style={{
+              display: 'none', // Initially hidden
+              position: 'fixed',
+              top: '60px',
               right: '20px',
               zIndex: 1000,
               backgroundColor: 'rgba(255, 255, 255, 0.9)',
@@ -94,6 +127,7 @@ export default function RootLayout({ children }) {
               transition: 'all 0.3s ease',
             }}
           />
+
           {!shouldHideNavbar && <Navbar />}
           {children}
         </ThemeProvider>
